@@ -1,12 +1,12 @@
 Experimental project to teste knowledge on: 
 
-Node.js
-React
-React Native
+Node.js<br >
+React<br >
+React Native<br >
 
 *********
 
-<img class="logo" src="https://www.cuby.com.br/cli/canastrinha/canastrinha.png">
+<img src="https://www.cuby.com.br/cli/canastrinha/canastrinha.png">
 
 This project consists of a mobile application that records the results of a popular card game in Brazil:
 
