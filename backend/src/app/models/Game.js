@@ -18,6 +18,25 @@ class Game extends Model {
 
         return this;
     }
+
+    static associate(models) {
+        this.belongsTo(models.Player, {
+            foreignKey: 'player_a1',
+            as: 'p_a1',
+        });
+        this.belongsTo(models.Player, {
+            foreignKey: 'player_a2',
+            as: 'p_a2',
+        });
+        this.belongsTo(models.Player, {
+            foreignKey: 'player_b1',
+            as: 'p_b1',
+        });
+        this.belongsTo(models.Player, {
+            foreignKey: 'player_b2',
+            as: 'p_b2',
+        });
+    }
 }
 
 export default Game;

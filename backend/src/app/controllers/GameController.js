@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Game from '../models/Game';
+import Player from '../models/Player';
 
 class GameController {
     async store(req, res) {
@@ -73,14 +74,32 @@ class GameController {
         const allGames = await Game.findAll({
             attributes: [
                 'id',
-                'player_a1',
-                'player_a2',
-                'player_b1',
-                'player_b2',
                 'score_a',
                 'score_b',
                 'created_at',
                 'updated_at',
+            ],
+            include: [
+                {
+                    model: Player,
+                    as: 'p_a1',
+                    attributes: ['id', 'name', 'avatar'],
+                },
+                {
+                    model: Player,
+                    as: 'p_a2',
+                    attributes: ['id', 'name', 'avatar'],
+                },
+                {
+                    model: Player,
+                    as: 'p_b1',
+                    attributes: ['id', 'name', 'avatar'],
+                },
+                {
+                    model: Player,
+                    as: 'p_b2',
+                    attributes: ['id', 'name', 'avatar'],
+                },
             ],
         });
         return res.json(allGames);

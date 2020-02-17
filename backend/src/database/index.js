@@ -1,14 +1,13 @@
 import Sequelize from 'sequelize';
 
 import Player from '../app/models/Player';
-import File from '../app/models/File';
 import League from '../app/models/League';
 import Game from '../app/models/Game';
 import Round from '../app/models/Round';
 
 import databaseConfig from '../config/database';
 
-const models = [Player, File, League, Game, Round];
+const models = [Player, League, Game, Round];
 
 class Database {
     constructor() {

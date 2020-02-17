@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import Player from '../models/Player';
-import File from '../models/File';
 
 class PlayerController {
     async store(req, res) {
@@ -88,14 +87,7 @@ class PlayerController {
 
     async index(req, res) {
         const players = await Player.findAll({
-            attributes: ['id', 'name', 'email', 'avatar_id'],
-            include: [
-                {
-                    model: File,
-                    as: 'avatar',
-                    attributes: ['path', 'url'],
-                },
-            ],
+            attributes: ['id', 'name', 'email', 'avatar'],
         });
         return res.json(players);
     }
