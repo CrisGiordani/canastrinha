@@ -1,6 +1,6 @@
 import Player from '../models/Player';
 
-class FileController {
+class AvatarController {
     async store(req, res) {
         const { filename: path } = req.file;
 
@@ -15,4 +15,4 @@ class FileController {
     }
 }
 
-export default new FileController();
+export default new AvatarController();

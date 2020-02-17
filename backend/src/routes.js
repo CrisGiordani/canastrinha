@@ -5,7 +5,7 @@ import multerConfig from './config/multer';
 
 import PlayerController from './app/controllers/PlayerController';
 import SessionController from './app/controllers/SessionController';
-import FileController from './app/controllers/FileController';
+import AvatarController from './app/controllers/AvatarController';
 import LeagueController from './app/controllers/LeagueController';
 import GameController from './app/controllers/GameController';
 import RoundController from './app/controllers/RoundController';
@@ -25,7 +25,7 @@ routes.use(authMiddleware);
 routes.put('/players', PlayerController.update);
 routes.get('/players', PlayerController.index);
 
-routes.post('/files', upload.single('file'), FileController.store);
+routes.post('/files', upload.single('file'), AvatarController.store);
 
 // Leagues
 routes.post('/leagues', LeagueController.store);
