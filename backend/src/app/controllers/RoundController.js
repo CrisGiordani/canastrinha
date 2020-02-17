@@ -1,27 +1,40 @@
-/*
+import * as Yup from 'yup';
+import Round from '../models/Round';
+import GameScoreUpdateService from '../services/GameScoreUpdateService';
 
-CREATE {
-    id_game: id_game,
-    round: int (get last, add one),
-    id_player: id_player,
-    score: int,
-    created_at: timestamp
+class RoundController {
+    async store(req, res) {
+        const schema = Yup.object().shape({
+            partial_a: Yup.number().required(),
+            partial_b: Yup.number().required(),
+        });
+
+        if (!(await schema.isValid(req.body))) {
+            return res.status(400).json({
+                error: 'Digite o resultado para registrar a rodada. ',
+            });
+        }
+
+        req.body.created_by = req.playerId;
+
+        const round = await Round.create(req.body);
+
+        const game = await GameScoreUpdateService.run({
+            id: req.body.id_game,
+            id_player: req.playerId,
+            partial_a: req.body.partial_a,
+            partial_b: req.body.partial_b,
+        });
+
+        return res.json([game, round]);
+    }
+
+    async index(req, res) {
+        const allRounds = await Round.findAll({
+            attributes: ['partial_a', 'partial_b', 'created_at'],
+        });
+        return res.json(allRounds);
+    }
 }
-if (round já existe) { delete and create - do not update }
 
-UPDATE (all / 4 registers) {
-    score: int
-} where {
-    id_game: id_game,
-    round: int,
-    id_player: id_player
-}
-
-DELETE (all / 4 registers) {
-    *
-} where {
-    id_game: id_game,
-    round: int
-}
-
-*/
+export default new RoundController();

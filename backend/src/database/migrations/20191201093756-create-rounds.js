@@ -11,20 +11,12 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
-            round: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-            },
-            id_player: {
-                type: Sequelize.INTEGER,
-                allowNull: false,
-            },
-            score_A: {
+            partial_a: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 defaultValue: 0,
             },
-            score: {
+            partial_b: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 defaultValue: 0,

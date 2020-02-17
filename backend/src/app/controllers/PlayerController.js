@@ -64,7 +64,7 @@ class PlayerController {
 
         if (email !== player.email) {
             const playerExists = await Player.findOne({
-                where: { email: email },
+                where: { email },
             });
             if (playerExists) {
                 return res

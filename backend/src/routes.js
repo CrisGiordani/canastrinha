@@ -7,6 +7,8 @@ import PlayerController from './app/controllers/PlayerController';
 import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
 import LeagueController from './app/controllers/LeagueController';
+import GameController from './app/controllers/GameController';
+import RoundController from './app/controllers/RoundController';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -25,7 +27,18 @@ routes.get('/players', PlayerController.index);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
+// Leagues
 routes.post('/leagues', LeagueController.store);
 routes.put('/leagues/:id', LeagueController.update);
-routes.get('/leagues/', LeagueController.index);
+routes.get('/leagues', LeagueController.index);
+
+// Games
+routes.post('/games', GameController.store);
+routes.put('/games', GameController.update);
+routes.get('/games', GameController.index);
+
+// Rounds
+routes.post('/rounds', RoundController.store);
+routes.get('/rounds', RoundController.index);
+
 export default routes;

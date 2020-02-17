@@ -11,28 +11,28 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
-            player_A1: {
+            player_a1: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
-            player_A2: {
+            player_a2: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
-            player_B1: {
+            player_b1: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
-            player_B2: {
+            player_b2: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
             },
-            score_A: {
+            score_a: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 defaultValue: 0,
             },
-            score_B: {
+            score_b: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
                 defaultValue: 0,
