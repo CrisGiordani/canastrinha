@@ -1,4 +1,6 @@
 import * as Yup from 'yup';
+import { Op } from 'sequelize';
+
 import Player from '../models/Player';
 
 class PlayerController {
@@ -10,7 +12,7 @@ class PlayerController {
                 .required(),
             password: Yup.string()
                 .required()
-                .min(4),
+                .min(3),
         });
 
         if (!(await schema.isValid(req.body))) {
@@ -76,20 +78,32 @@ class PlayerController {
             return res.status(401).json({ error: 'Senha incorreta.' });
         }
 
+        const { avatar } = player;
         const { id, name } = await player.update(req.body);
 
         return res.json({
             id,
             name,
             email,
+            avatar,
         });
     }
 
     async index(req, res) {
-        const players = await Player.findAll({
-            attributes: ['id', 'name', 'email', 'avatar'],
-        });
-        return res.json(players);
+        if (req.params.id > 0) {
+            const player = await Player.findByPk(req.params.id);
+            if (!player) {
+                return res.status(400).json({
+                    error: 'Jogador não encontrado!',
+                });
+            }
+            return res.json(player);
+        } else {
+            const players = await Player.findAll({
+                attributes: ['id', 'name', 'email', 'avatar'],
+            });
+            return res.json(players);
+        }
     }
 }
 

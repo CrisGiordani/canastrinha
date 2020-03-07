@@ -19,6 +19,7 @@ class GameController {
         req.body.created_by = req.playerId;
 
         const {
+            id,
             id_league,
             player_a1,
             player_a2,
@@ -28,6 +29,7 @@ class GameController {
         } = await Game.create(req.body);
 
         return res.json({
+            id,
             id_league,
             player_a1,
             player_a2,
@@ -71,38 +73,78 @@ class GameController {
     }
 
     async index(req, res) {
-        const allGames = await Game.findAll({
-            attributes: [
-                'id',
-                'score_a',
-                'score_b',
-                'created_at',
-                'updated_at',
-            ],
-            include: [
-                {
-                    model: Player,
-                    as: 'p_a1',
-                    attributes: ['id', 'name', 'avatar'],
-                },
-                {
-                    model: Player,
-                    as: 'p_a2',
-                    attributes: ['id', 'name', 'avatar'],
-                },
-                {
-                    model: Player,
-                    as: 'p_b1',
-                    attributes: ['id', 'name', 'avatar'],
-                },
-                {
-                    model: Player,
-                    as: 'p_b2',
-                    attributes: ['id', 'name', 'avatar'],
-                },
-            ],
-        });
-        return res.json(allGames);
+        if (req.params.id > 0) {
+            const game = await Game.findByPk(req.params.id, {
+                attributes: [
+                    'id',
+                    'score_a',
+                    'score_b',
+                    'created_at',
+                    'updated_at',
+                ],
+                include: [
+                    {
+                        model: Player,
+                        as: 'p_a1',
+                        attributes: ['id', 'name', 'avatar'],
+                    },
+                    {
+                        model: Player,
+                        as: 'p_a2',
+                        attributes: ['id', 'name', 'avatar'],
+                    },
+                    {
+                        model: Player,
+                        as: 'p_b1',
+                        attributes: ['id', 'name', 'avatar'],
+                    },
+                    {
+                        model: Player,
+                        as: 'p_b2',
+                        attributes: ['id', 'name', 'avatar'],
+                    },
+                ],
+            });
+            if (!game) {
+                return res.status(400).json({
+                    error: 'Jogo não encontrado!',
+                });
+            }
+            return res.json(game);
+        } else {
+            const allGames = await Game.findAll({
+                attributes: [
+                    'id',
+                    'score_a',
+                    'score_b',
+                    'created_at',
+                    'updated_at',
+                ],
+                include: [
+                    {
+                        model: Player,
+                        as: 'p_a1',
+                        attributes: ['id', 'name', 'avatar'],
+                    },
+                    {
+                        model: Player,
+                        as: 'p_a2',
+                        attributes: ['id', 'name', 'avatar'],
+                    },
+                    {
+                        model: Player,
+                        as: 'p_b1',
+                        attributes: ['id', 'name', 'avatar'],
+                    },
+                    {
+                        model: Player,
+                        as: 'p_b2',
+                        attributes: ['id', 'name', 'avatar'],
+                    },
+                ],
+            });
+            return res.json(allGames);
+        }
     }
 }
 

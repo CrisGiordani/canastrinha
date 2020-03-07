@@ -5,9 +5,11 @@ import Game from '../app/models/Game';
 import Round from '../app/models/Round';
 import Player from '../app/models/Player';
 
+import LeaguesPlayers from '../app/models/LeaguesPlayers';
+
 import databaseConfig from '../config/database';
 
-const models = [League, Game, Round, Player];
+const models = [League, Game, Round, Player, LeaguesPlayers];
 
 class Database {
     constructor() {

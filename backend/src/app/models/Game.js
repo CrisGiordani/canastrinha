@@ -36,6 +36,18 @@ class Game extends Model {
             foreignKey: 'player_b2',
             as: 'p_b2',
         });
+        this.belongsTo(models.Player, {
+            foreignKey: 'created_by',
+            as: 'admin',
+        });
+        this.belongsTo(models.League, {
+            foreignKey: 'id_league',
+            as: 'league',
+        });
+        this.hasMany(models.Round, {
+            foreignKey: 'id_game',
+            as: 'rounds',
+        });
     }
 }
 

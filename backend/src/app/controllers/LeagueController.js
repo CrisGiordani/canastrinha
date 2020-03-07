@@ -1,6 +1,4 @@
-/* eslint-disable no-unreachable */
 import * as Yup from 'yup';
-// import Sequelize from 'sequelize';
 import League from '../models/League';
 
 class LeagueController {
@@ -90,21 +88,16 @@ class LeagueController {
     }
 
     async index(req, res) {
-        // todas as ligas
-        // const { term } = req.params;
-
-        // if (term === 'all') {
-        const allLeagues = await League.findAll({
-            attributes: ['id', 'name', 'description', 'rules', 'created_by'],
-        });
-        return res.json(allLeagues);
-        // }
-        /*
-        if (term === 'my') {
-            const myLeagues = await League.findAll({
-                where: {
-                    created_by: req.playerId,
-                },
+        if (req.params.id > 0) {
+            const league = await League.findByPk(req.params.id);
+            if (!id) {
+                return res.status(400).json({
+                    error: 'Liga não encontrada!',
+                });
+            }
+            return res.json(league);
+        } else {
+            const allLeagues = await League.findAll({
                 attributes: [
                     'id',
                     'name',
@@ -113,16 +106,8 @@ class LeagueController {
                     'created_by',
                 ],
             });
-            return res.json(myLeagues);
+            return res.json(allLeagues);
         }
-
-        const query = `%${term}%`;
-        const findLeagues = await League.findAll({
-            where: { name: { [Sequelize.Op.like]: query } },
-            attributes: ['id', 'name', 'description', 'rules', 'created_by'],
-        });
-        return res.json(findLeagues);
-        */
     }
 }
 

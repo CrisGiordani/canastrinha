@@ -7,7 +7,7 @@ export default async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        res.status(401).json({ error: 'Autenticação não realizada.' });
+        return res.status(401).json({ error: 'Autenticação não realizada.' });
     }
 
     const [, token] = authHeader.split(' ');
@@ -15,7 +15,6 @@ export default async (req, res, next) => {
     try {
         const decoded = await promisify(jwt.verify)(token, authConfig.secret);
         req.playerId = decoded.id;
-
         return next();
     } catch (err) {
         return res.status(401).json({ error: 'Autenticação inválida.' });
