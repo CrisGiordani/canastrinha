@@ -29,8 +29,27 @@ export function playing(game) {
   };
 }
 
-export function notPlaying() {
+export function notPlaying(game) {
   return {
     type: '@game/NOT_PLAYING',
+  };
+}
+
+export function registerRound(id_game, partial_a, partial_b) {
+  return {
+    type: '@game/REGISTER_ROUND_REQUEST',
+    payload: {id_game, partial_a, partial_b},
+  };
+}
+
+export function reached3000Request(titulo, msg) {
+  return {
+    type: '@game/REACHED_3000_REQUEST',
+    payload: {titulo, msg},
+  };
+}
+export function reached3000Success() {
+  return {
+    type: '@game/REACHED_3000_SUCCESS',
   };
 }

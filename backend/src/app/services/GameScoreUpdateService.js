@@ -16,8 +16,8 @@ class GameScoreUpdateService {
         ) {
             throw new Error('Você não tem autorização para editar este jogo!');
         }
-        game.score_a += partial_a;
-        game.score_b += partial_b;
+        game.score_a += parseInt(partial_a);
+        game.score_b += parseInt(partial_b);
 
         const game_atualizado = await game.save();
         return game_atualizado;

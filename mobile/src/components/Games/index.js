@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState, useEffect} from 'react';
 import {parseISO, formatRelative} from 'date-fns';
 import {ptBR} from 'date-fns/locale';
 
@@ -23,9 +23,31 @@ export default function Games({data}) {
     return adjustDateStr;
   }, [data.updated_at]);
 
+  const [team_a_background, setTeam_a_background] = useState('#EEE');
+  const [team_b_background, setTeam_b_background] = useState('#EEE');
+
+  useEffect(() => {
+    async function colorTeam() {
+      if (data.score_a > 3000 || data.score_b > 3000) {
+        if (data.score_a > data.score_b) {
+          setTeam_a_background('#36bb36');
+        } else if (data.score_a < data.score_b) {
+          setTeam_b_background('#36bb36');
+        } else {
+          setTeam_a_background('#36bb36');
+          setTeam_b_background('#36bb36');
+        }
+      }
+    }
+    colorTeam();
+  }, []);
+
   return (
     <Card>
-      <Team>
+      <Team
+        style={{
+          backgroundColor: `${team_a_background}`,
+        }}>
         <Player_1>
           <Avatar
             source={{
@@ -56,7 +78,7 @@ export default function Games({data}) {
         <Text>{dateStr}</Text>
       </Info>
 
-      <Team>
+      <Team style={{backgroundColor: `${team_b_background}`}}>
         <Player_1>
           <Avatar
             source={{

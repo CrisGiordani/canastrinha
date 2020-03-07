@@ -8,6 +8,7 @@ import {
   startGameFailure,
   playing,
   notPlaying,
+  reached3000Success,
 } from './actions';
 
 export function* setPlaying() {
@@ -47,8 +48,35 @@ export function* startGame({payload}) {
 
 export function gameStarted(game) {}
 
+export function* registerRoundRequest({payload}) {
+  try {
+    const {id_game, partial_a, partial_b} = payload;
+
+    const response = yield call(api.post, 'rounds', {
+      id_game,
+      partial_a,
+      partial_b,
+    });
+
+    Alert.alert('Sucesso', 'Rodada registrada com sucesso!');
+  } catch (err) {
+    Alert.alert(
+      'Falha no Registro',
+      'Erro ao registrar rodada, verifique os dados',
+    );
+  }
+}
+
+export function* reached3000Request({payload}) {
+  const {titulo, msg} = payload;
+  Alert.alert(`${titulo}`, `${msg}`);
+  yield put(reached3000Success());
+}
+
 export default all([
   takeLatest('persist/REHYDRATE', setPlaying),
   takeLatest('@game/START_GAME_REQUEST', startGame),
   takeLatest('@game/START_GAME_SUCCESS', gameStarted),
+  takeLatest('@game/REGISTER_ROUND_REQUEST', registerRoundRequest),
+  takeLatest('@game/REACHED_3000_REQUEST', reached3000Request),
 ]);
