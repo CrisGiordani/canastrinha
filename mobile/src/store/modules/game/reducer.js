@@ -4,7 +4,7 @@ import produce from 'immer';
 const INITIAL_STATE = {
   playing: false,
   loading: false,
-  reached3000: false,
+  reach3000: false,
 };
 
 export default function game(state = INITIAL_STATE, action) {
@@ -19,6 +19,11 @@ export default function game(state = INITIAL_STATE, action) {
         draft.playing = true;
         break;
       }
+      case '@game/START_GAME_FAILURE': {
+        draft.loading = false;
+        break;
+      }
+
       case '@game/PLAYING': {
         draft.playing = true;
         break;
@@ -27,32 +32,35 @@ export default function game(state = INITIAL_STATE, action) {
         draft.playing = false;
         break;
       }
-      case '@game/START_GAME_SUCCESS': {
-        draft.loading = false;
-        draft.playing = true;
-        break;
-      }
-      case '@game/START_GAME_FAILURE': {
-        draft.loading = false;
-        break;
-      }
-
-      case '@game/REACHED_3000_SUCCESS': {
-        draft.loading = false;
-        draft.playing = true;
-        draft.reached3000 = true;
-        break;
-      }
-
-      case '@game/GAME_FINISHED': {
-        draft.loading = false;
-        draft.playing = false;
-        break;
-      }
 
       case '@game/REGISTER_ROUND_REQUEST': {
         draft.loading = true;
         draft.playing = true;
+        break;
+      }
+
+      case '@game/REACH_3000_SUCCESS': {
+        draft.loading = false;
+        draft.playing = true;
+        draft.reach3000 = true;
+        break;
+      }
+
+      case '@game/REACH_3000_FAILURE': {
+        draft.loading = false;
+        draft.playing = true;
+        draft.reach3000 = false;
+        break;
+      }
+
+      case '@game/FINISH_GAME_REQUEST': {
+        draft.loading = true;
+        break;
+      }
+
+      case '@game/FINISH_GAME_SUCCESS': {
+        draft.loading = false;
+        draft.playing = false;
         break;
       }
 

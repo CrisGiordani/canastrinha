@@ -8,18 +8,9 @@ import {
   startGameFailure,
   playing,
   notPlaying,
-  reached3000Success,
+  reach3000Success,
+  finishGameSuccess,
 } from './actions';
-
-export function* setPlaying() {
-  const response = yield call(api.get, 'gameplaying');
-  if (response.data.length > 0) {
-    const game = response.data[0];
-    yield put(playing(game));
-  } else {
-    yield put(notPlaying());
-  }
-}
 
 export function* startGame({payload}) {
   try {
@@ -46,9 +37,17 @@ export function* startGame({payload}) {
   }
 }
 
-export function gameStarted(game) {}
+export function* setPlaying() {
+  const response = yield call(api.get, 'gameplaying');
+  if (response.data.length > 0) {
+    const game = response.data[0];
+    yield put(playing(game));
+  } else {
+    yield put(notPlaying());
+  }
+}
 
-export function* registerRoundRequest({payload}) {
+export function* registerRound({payload}) {
   try {
     const {id_game, partial_a, partial_b} = payload;
 
@@ -67,16 +66,34 @@ export function* registerRoundRequest({payload}) {
   }
 }
 
-export function* reached3000Request({payload}) {
-  const {titulo, msg} = payload;
-  Alert.alert(`${titulo}`, `${msg}`);
-  yield put(reached3000Success());
+export function* reach3000({payload}) {
+  try {
+    const {titulo, msg} = payload;
+    Alert.alert(`${titulo}`, `${msg}`);
+    yield put(reach3000Success());
+  } catch (err) {
+    Alert.alert('Erro desconhecido', 'Erro ao atingir 3000 pontos.');
+  }
+}
+
+export function* finishGame({payload}) {
+  try {
+    const {id_game} = payload;
+    const playing = 0;
+    const response = yield call(api.put, `games/${id_game}`, {
+      playing: 0,
+    });
+    yield put(finishGameSuccess());
+    Alert.alert('Sucesso', 'Partida encerrada com sucesso!');
+  } catch (err) {
+    Alert.alert('Erro desconhecido', 'Erro ao encerrar a partida.');
+  }
 }
 
 export default all([
   takeLatest('persist/REHYDRATE', setPlaying),
   takeLatest('@game/START_GAME_REQUEST', startGame),
-  takeLatest('@game/START_GAME_SUCCESS', gameStarted),
-  takeLatest('@game/REGISTER_ROUND_REQUEST', registerRoundRequest),
-  takeLatest('@game/REACHED_3000_REQUEST', reached3000Request),
+  takeLatest('@game/REGISTER_ROUND_REQUEST', registerRound),
+  takeLatest('@game/REACH_3000_REQUEST', reach3000),
+  takeLatest('@game/FINISH_GAME_REQUEST', finishGame),
 ]);

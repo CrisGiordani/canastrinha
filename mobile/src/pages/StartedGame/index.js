@@ -3,7 +3,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import {TextInput, Platform} from 'react-native';
 import api from '../../services/api';
 
-import {reached3000Request} from '../../store/modules/game/actions';
+import {
+  registerRoundRequest,
+  reach3000Request,
+  reach3000Failure,
+  finishGameRequest,
+} from '../../store/modules/game/actions';
 
 import Background from '../../components/SignedBackground';
 import Games from '../../components/Games';
@@ -22,67 +27,76 @@ import {
   CancelButton,
 } from './styles';
 
-import {registerRound} from '../../store/modules/game/actions';
-
 export default function StartedGame() {
+  const dispatch = useDispatch();
+
   const [game, setGame] = useState([]);
   const [rounds, setRounds] = useState([]);
+
   const [numRounds, setNumRounds] = useState(0);
   const [calculando, setCalculando] = useState(false);
 
   const [partial_a, setPartialA] = useState('');
   const [partial_b, setPartialB] = useState('');
 
+  const [winner, setWinner] = useState('');
+
   useEffect(() => {
-    async function loadGames() {
+    async function updateGame() {
       const response = await api.get('gameplaying');
       setGame(response.data);
       setRounds(response.data[0].rounds);
-      setCalculando(false);
 
-      if (response.data[0].score_a > 3000 || response.data[0].score_b > 3000) {
+      if (
+        response.data[0].score_a >= 3000 ||
+        response.data[0].score_b >= 3000
+      ) {
         if (response.data[0].score_a > response.data[0].score_b) {
-          dispatch(
-            reached3000Request('Jogo finalizado!', 'Vitória da Dupla A'),
-          );
+          setWinner('A');
+          dispatch(reach3000Request('Jogo finalizado!', 'Vitória da Dupla A'));
         } else if (response.data[0].score_a < response.data[0].score_b) {
-          dispatch(
-            reached3000Request('Jogo finalizado!', 'Vitória da Dupla B'),
-          );
+          setWinner('B');
+          dispatch(reach3000Request('Jogo finalizado!', 'Vitória da Dupla B'));
         } else {
+          setWinner('AB');
           dispatch(
-            reached3000Request(
+            reach3000Request(
               'Jogo empatado!',
               'O jogo já pode ser encerrado, mas que tal uma rodada de desempate!? Briga! ... Briga! ... Briga! ... Briga! ...',
             ),
           );
         }
+      } else {
+        dispatch(reach3000Failure());
       }
+      setCalculando(false);
     }
-    loadGames();
+    updateGame();
   }, [numRounds]);
 
-  const dispatch = useDispatch();
-
   function handleSubmit() {
+    setCalculando(true);
     const id_game = game[0].id;
-    dispatch(registerRound(id_game, partial_a, partial_b));
+    dispatch(registerRoundRequest(id_game, partial_a, partial_b));
     setPartialA('');
     setPartialB('');
-    setCalculando(true);
     setTimeout(() => {
       setNumRounds(numRounds + 1);
     }, 5000);
   }
 
+  function handleFinish() {
+    const id_game = game[0].id;
+    dispatch(finishGameRequest(id_game));
+  }
   const loading = useSelector(state => state.auth.loading);
-  const reached3000 = useSelector(state => state.game.reached3000);
+  const reach3000 = useSelector(state => state.game.reach3000);
 
   return (
     <Background>
       <Container>
         <Title>
-          {reached3000
+          {reach3000
             ? 'Concluído!'
             : calculando
             ? 'Atualizando...'
@@ -91,7 +105,7 @@ export default function StartedGame() {
         <List
           data={game}
           keyExtractor={item => String(item.id)}
-          renderItem={({item}) => <Games data={item} />}
+          renderItem={({item}) => <Games data={item} winner={winner} />}
         />
         <Title>Rodadas</Title>
 
@@ -104,7 +118,7 @@ export default function StartedGame() {
         </ViewRounds>
 
         <View>
-          <Text>Equipe A</Text>
+          <Text>Dupla A</Text>
           <Input
             style={{
               height: 40,
@@ -120,7 +134,7 @@ export default function StartedGame() {
           />
         </View>
         <View>
-          <Text>Equipe B</Text>
+          <Text>Dupla B</Text>
           <Input
             style={{
               height: 40,
@@ -136,7 +150,7 @@ export default function StartedGame() {
           />
         </View>
 
-        {reached3000 ? (
+        {reach3000 ? (
           <>
             <View>
               <SubmitButton loading={loading} onPress={handleSubmit}>
@@ -144,7 +158,7 @@ export default function StartedGame() {
               </SubmitButton>
             </View>
             <View>
-              <CancelButton loading={loading} onPress={handleSubmit}>
+              <CancelButton loading={loading} onPress={handleFinish}>
                 encerrar
               </CancelButton>
             </View>

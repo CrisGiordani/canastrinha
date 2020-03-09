@@ -5,6 +5,7 @@ class Game extends Model {
         super.init(
             {
                 id_league: Sequelize.INTEGER,
+                playing: Sequelize.BOOLEAN,
                 player_a1: Sequelize.INTEGER,
                 player_a2: Sequelize.INTEGER,
                 player_b1: Sequelize.INTEGER,

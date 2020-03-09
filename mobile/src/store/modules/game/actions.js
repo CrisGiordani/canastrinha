@@ -1,3 +1,5 @@
+//START GAME
+
 export function startGameRequest(
   id_league,
   player_a1,
@@ -10,46 +12,66 @@ export function startGameRequest(
     payload: {id_league, player_a1, player_a2, player_b1, player_b2},
   };
 }
-
-export function startGameSucess(game) {
+export function startGameSuccess(game) {
   return {
     type: '@game/START_GAME_SUCCESS',
   };
 }
-
 export function startGameFailure() {
   return {
     type: '@game/START_GAME_FAILURE',
   };
 }
 
+// PLAYING NOW
 export function playing(game) {
   return {
     type: '@game/PLAYING',
   };
 }
-
 export function notPlaying(game) {
   return {
     type: '@game/NOT_PLAYING',
   };
 }
 
-export function registerRound(id_game, partial_a, partial_b) {
+// REGISTER ROUND
+export function registerRoundRequest(id_game, partial_a, partial_b) {
   return {
     type: '@game/REGISTER_ROUND_REQUEST',
     payload: {id_game, partial_a, partial_b},
   };
 }
 
-export function reached3000Request(titulo, msg) {
+// REACH 3000
+export function reach3000Request(titulo, msg) {
   return {
-    type: '@game/REACHED_3000_REQUEST',
+    type: '@game/REACH_3000_REQUEST',
     payload: {titulo, msg},
   };
 }
-export function reached3000Success() {
+export function reach3000Success() {
   return {
-    type: '@game/REACHED_3000_SUCCESS',
+    type: '@game/REACH_3000_SUCCESS',
+  };
+}
+
+export function reach3000Failure() {
+  return {
+    type: '@game/REACH_3000_FAILURE',
+  };
+}
+
+// FINISH GAME
+export function finishGameRequest(id_game) {
+  return {
+    type: '@game/FINISH_GAME_REQUEST',
+    payload: {id_game},
+  };
+}
+
+export function finishGameSuccess() {
+  return {
+    type: '@game/FINISH_GAME_SUCCESS',
   };
 }

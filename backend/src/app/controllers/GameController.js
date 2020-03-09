@@ -41,7 +41,7 @@ class GameController {
 
     async update(req, res) {
         // 1. busca dados do jogo atual
-        const game = await Game.findByPk(req.body.id_game);
+        const game = await Game.findByPk(req.params.id);
 
         if (!game) {
             return res.status(400).json({
@@ -63,6 +63,8 @@ class GameController {
         // 3. atualiza scores
         game.score_a += req.body.score_a;
         game.score_b += req.body.score_b;
+
+        game.playing = req.body.playing;
 
         // 4. salva Game
         const { score_a, score_b } = await game.update(req.body);
