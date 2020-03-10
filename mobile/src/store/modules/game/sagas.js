@@ -29,16 +29,13 @@ export function* startGame({payload}) {
     const game = response.data[0];
     yield put(startGameSuccess(game));
   } catch (err) {
-    Alert.alert(
-      'Falha na inicialização',
-      'Erro na inicialização da partida, verifique os dados',
-    );
+    Alert.alert(err.name, err.message);
     yield put(startGameFailure());
   }
 }
 
 export function* setPlaying() {
-  const response = yield call(api.get, 'gameplaying');
+  const response = yield call(api.get, 'gameplayingservice');
   if (response.data.length > 0) {
     const game = response.data[0];
     yield put(playing(game));

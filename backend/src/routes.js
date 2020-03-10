@@ -12,10 +12,14 @@ import RoundController from './app/controllers/RoundController';
 
 import authMiddleware from './app/middlewares/auth';
 
-import GamePlaying from './app/services/GamePlaying';
+import GamePlayingService from './app/services/GamePlayingService';
 
-import PlayersLeague from './app/lists/PlayersLeague';
-import LeaguesPlayer from './app/lists/LeaguesPlayer';
+import LeagueGames from './app/lists/LeagueGames';
+import LeaguePlayers from './app/lists/LeaguePlayers';
+import LeagueRanking from './app/lists/LeagueRanking';
+
+import PlayerGames from './app/lists/PlayerGames';
+import PlayerLeagues from './app/lists/PlayerLeagues';
 
 const routes = new Router();
 const upload = multer(multerConfig);
@@ -29,20 +33,22 @@ routes.use(authMiddleware);
 
 // Players
 routes.put('/players', PlayerController.update); // edita os dados de um jogador
-routes.get('/players/:id?', PlayerController.index); // lista jogadores OU dados de um jogador (:id)
-routes.get('/players/league/:league', PlayersLeague.index); // lista ligas de um player (:player)
-
+routes.get('/players/:id?', PlayerController.index); // lista jogadores OU dados de um jogador
+routes.get('/players/:player/leagues', PlayerLeagues.index); // lista ligas de um player
+routes.get('/players/:player/games', PlayerGames.index); // lista ligas de um player
 // Files
 routes.post('/files', upload.single('file'), AvatarController.store);
 
 // Leagues
 routes.post('/leagues', LeagueController.store); // grava uma nova liga
 routes.put('/leagues/:id', LeagueController.update); // edita os dados de uma liga
-routes.get('/leagues/:id?', LeagueController.index); // lista ligas OU dados de uma liga (:id)
-routes.get('/leagues/player/:player', LeaguesPlayer.index); // lista ligas de um player (:player)
+routes.get('/leagues/:id?', LeagueController.index); // lista ligas OU dados de uma liga
+routes.get('/leagues/:league/ranking', LeagueRanking.index); // lista ranking da liga
+routes.get('/leagues/:league/games', LeagueGames.index); // lista jogos de uma liga
+routes.get('/leagues/:league/players', LeaguePlayers.index); // lista players de uma liga
 
 // JOGO EM ANDAMENTO
-routes.get('/gameplaying', GamePlaying.run);
+routes.get('/gameplayingservice', GamePlayingService.run);
 
 // Games
 routes.post('/games', GameController.store); // grava uma nova partida

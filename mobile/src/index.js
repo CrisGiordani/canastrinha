@@ -1,12 +1,11 @@
 import * as React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider} from 'react-redux';
 
 import './config/ReactotronConfig';
 
 import {store, persistor} from './store';
-
-import {NavigationContainer} from '@react-navigation/native';
 
 import Routes from './routes';
 

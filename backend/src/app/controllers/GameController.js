@@ -122,6 +122,7 @@ class GameController {
                     'created_at',
                     'updated_at',
                 ],
+                order: [['updated_at', 'desc']],
                 include: [
                     {
                         model: Player,

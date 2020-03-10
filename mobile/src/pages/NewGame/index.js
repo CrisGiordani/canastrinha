@@ -10,18 +10,7 @@ import {StyleSheet, Alert} from 'react-native';
 
 import Background from '../../components/SignedBackground';
 
-import {
-  Container,
-  Title,
-  SubTitle,
-  SignLink,
-  SignLinkText,
-  Card,
-  CardTitle,
-  SignedButton,
-  CancelButton,
-  Text,
-} from './styles';
+import {Container, Title, Card, CardTitle, SignedButton, Text} from './styles';
 
 export default function NewGame({navigation}) {
   const dispatch = useDispatch();
@@ -34,7 +23,7 @@ export default function NewGame({navigation}) {
 
   useEffect(() => {
     async function loadLeagues() {
-      const response = await api.get(`leagues/player/${player.id}`);
+      const response = await api.get(`players/${player.id}/leagues`);
       let resultLeagues = response.data.map(item => ({
         label: item.league.name,
         value: item.id,
@@ -46,12 +35,11 @@ export default function NewGame({navigation}) {
 
   useEffect(() => {
     async function loadPlayers() {
-      const response = await api.get(`players/league/${selectedLeague}`);
+      const response = await api.get(`leagues/${selectedLeague}/players`);
       let resultPlayers = response.data.map(item => ({
         label: item.player.name,
         value: item.id,
       }));
-      console.log(resultPlayers);
       setPlayers(resultPlayers);
     }
     loadPlayers();
@@ -63,6 +51,34 @@ export default function NewGame({navigation}) {
   };
 
   function handleStart() {
+    if (selectedLeague == 0) {
+      Alert.alert(
+        'Selecione uma Liga',
+        'Para iniciar uma partida, primeiro selecione uma Liga e depois os 4 jogadores distintos',
+      );
+      return;
+    }
+    if (player_a1 == 0 || player_a2 == 0 || player_b1 == 0 || player_b2 == 0) {
+      Alert.alert(
+        'Verifique os Jogadores',
+        'A partida não pode ser iniciada sem a escolha dos 4 jogadores',
+      );
+      return;
+    }
+    if (
+      player_a1 == player_a2 ||
+      player_a1 == player_b1 ||
+      player_a1 == player_b2 ||
+      player_a2 == player_b1 ||
+      player_a2 == player_b2 ||
+      player_b1 == player_b2
+    ) {
+      Alert.alert(
+        'Jogadores Repetidos',
+        'Selecione 4 jogadores distintos para iniciar a partida',
+      );
+      return;
+    }
     dispatch(
       startGameRequest(
         selectedLeague,
@@ -82,11 +98,7 @@ export default function NewGame({navigation}) {
   return (
     <Background>
       <Container>
-        <Title>Nova Partida</Title>
-        <SubTitle>
-          Inicie uma nova partida definindo uma liga e os jogadores de cada
-          equipe.
-        </SubTitle>
+        <Title>NOVA PARTIDA</Title>
         <Card>
           <CardTitle>Liga</CardTitle>
           <RNPickerSelect
@@ -98,20 +110,23 @@ export default function NewGame({navigation}) {
             style={{
               ...pickerSelectStyles,
               iconContainer: {
-                top: 20,
-                right: 18,
+                top: 15,
+                right: 15,
               },
             }}
             value={selectedLeague}
             useNativeAndroidPickerStyle={false}
             Icon={() => {
-              return <Icon name="add" size={24} color="gray" />;
+              return <Icon name="add" size={24} color="white" />;
             }}
           />
-          <Text>Apenas jogadores da liga selecionada podem jogar</Text>
+          <Text>
+            Apenas jogadores da liga selecionada podem ser escolhidos para
+            participar da partida
+          </Text>
         </Card>
         <Card>
-          <CardTitle>Equipe A</CardTitle>
+          <CardTitle>Dupla A</CardTitle>
           <RNPickerSelect
             placeholder={placeholder}
             items={players}
@@ -121,14 +136,14 @@ export default function NewGame({navigation}) {
             style={{
               ...pickerSelectStyles,
               iconContainer: {
-                top: 20,
-                right: 18,
+                top: 15,
+                right: 15,
               },
             }}
             value={player_a1}
             useNativeAndroidPickerStyle={false}
             Icon={() => {
-              return <Icon name="add" size={24} color="gray" />;
+              return <Icon name="add" size={24} color="white" />;
             }}
           />
           <RNPickerSelect
@@ -140,19 +155,19 @@ export default function NewGame({navigation}) {
             style={{
               ...pickerSelectStyles,
               iconContainer: {
-                top: 20,
-                right: 18,
+                top: 15,
+                right: 15,
               },
             }}
             value={player_a2}
             useNativeAndroidPickerStyle={false}
             Icon={() => {
-              return <Icon name="add" size={24} color="gray" />;
+              return <Icon name="add" size={24} color="white" />;
             }}
           />
         </Card>
         <Card>
-          <CardTitle>Equipe B</CardTitle>
+          <CardTitle>Dupla B</CardTitle>
           <RNPickerSelect
             placeholder={placeholder}
             items={players}
@@ -162,14 +177,14 @@ export default function NewGame({navigation}) {
             style={{
               ...pickerSelectStyles,
               iconContainer: {
-                top: 20,
-                right: 18,
+                top: 15,
+                right: 15,
               },
             }}
             value={player_b1}
             useNativeAndroidPickerStyle={false}
             Icon={() => {
-              return <Icon name="add" size={24} color="gray" />;
+              return <Icon name="add" size={24} color="white" />;
             }}
           />
           <RNPickerSelect
@@ -181,19 +196,18 @@ export default function NewGame({navigation}) {
             style={{
               ...pickerSelectStyles,
               iconContainer: {
-                top: 20,
-                right: 18,
+                top: 15,
+                right: 15,
               },
             }}
             value={player_b2}
             useNativeAndroidPickerStyle={false}
             Icon={() => {
-              return <Icon name="add" size={24} color="gray" />;
+              return <Icon name="add" size={24} color="white" />;
             }}
           />
         </Card>
         <SignedButton onPress={handleStart}>Iniciar</SignedButton>
-        <CancelButton>Cancelar</CancelButton>
       </Container>
     </Background>
   );
@@ -201,25 +215,31 @@ export default function NewGame({navigation}) {
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    fontSize: 16,
-    margin: 8,
+    backgroundColor: '#680f88',
+    fontSize: 17,
+    marginLeft: 6,
+    marginRight: 6,
+    marginTop: 4,
+    marginBottom: 1,
     paddingVertical: 12,
     paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
+    borderWidth: 0,
     borderRadius: 4,
-    color: 'black',
+    color: 'white',
     paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
-    fontSize: 16,
-    margin: 8,
+    backgroundColor: '#680f88',
+    fontSize: 17,
+    marginLeft: 6,
+    marginRight: 6,
+    marginTop: 4,
+    marginBottom: 1,
     paddingHorizontal: 10,
     paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: 'purple',
+    borderWidth: 0,
     borderRadius: 8,
-    color: 'black',
+    color: 'white',
     paddingRight: 30, // to ensure the text is never behind the icon
   },
 });

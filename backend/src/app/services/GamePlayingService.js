@@ -4,7 +4,7 @@ import League from '../models/League';
 import Round from '../models/Round';
 
 import { Op } from 'sequelize';
-class GamePlaying {
+class GamePlayingService {
     async run(req, res) {
         const game = await Game.findAll({
             where: {
@@ -69,4 +69,4 @@ class GamePlaying {
     }
 }
 
-export default new GamePlaying();
+export default new GamePlayingService();

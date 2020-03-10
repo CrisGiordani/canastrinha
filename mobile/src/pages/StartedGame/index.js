@@ -43,7 +43,7 @@ export default function StartedGame() {
 
   useEffect(() => {
     async function updateGame() {
-      const response = await api.get('gameplaying');
+      const response = await api.get('gameplayingservice');
       setGame(response.data);
       setRounds(response.data[0].rounds);
 

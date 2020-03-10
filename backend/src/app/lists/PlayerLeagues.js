@@ -3,9 +3,9 @@ import League from '../models/League';
 import LeaguesPlayers from '../models/LeaguesPlayers';
 
 import { Op } from 'sequelize';
-class LeaguesPlayer {
+class PlayerLeagues {
     async index(req, res) {
-        const leaguesPlayer = await LeaguesPlayers.findAll({
+        const leagues = await LeaguesPlayers.findAll({
             where: {
                 id_player: {
                     [Op.eq]: req.params.player,
@@ -20,8 +20,8 @@ class LeaguesPlayer {
                 },
             ],
         });
-        return res.json(leaguesPlayer);
+        return res.json(leagues);
     }
 }
 
-export default new LeaguesPlayer();
+export default new PlayerLeagues();

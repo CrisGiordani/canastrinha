@@ -30,7 +30,6 @@ export default function Games({data, winner}) {
 
   useEffect(() => {
     function colorTeam() {
-      console.log(winner);
       if (winner === 'A') {
         setTeam_a_background('#36bb36');
         setTeam_a_fontColor('#FFF');
