@@ -53,6 +53,20 @@ export default function game(state = INITIAL_STATE, action) {
         break;
       }
 
+      case '@game/CANCEL_GAME_REQUEST': {
+        draft.loading = true;
+        draft.playing = true;
+        draft.reach3000 = false;
+        break;
+      }
+
+      case '@game/CANCEL_GAME_SUCCESS': {
+        draft.loading = false;
+        draft.playing = false;
+        draft.reach3000 = false;
+        break;
+      }
+
       case '@game/FINISH_GAME_REQUEST': {
         draft.loading = true;
         break;

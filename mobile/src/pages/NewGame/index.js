@@ -20,6 +20,7 @@ export default function NewGame({navigation}) {
   const [selectedLeague, setLeague] = useState(0);
 
   const player = useSelector(state => state.player.player);
+  const loading = useSelector(state => state.auth.loading);
 
   useEffect(() => {
     async function loadLeagues() {
@@ -207,7 +208,9 @@ export default function NewGame({navigation}) {
             }}
           />
         </Card>
-        <SignedButton onPress={handleStart}>Iniciar</SignedButton>
+        <SignedButton onPress={handleStart} loading={loading}>
+          Iniciar
+        </SignedButton>
       </Container>
     </Background>
   );

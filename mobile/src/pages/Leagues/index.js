@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from 'react';
+
+import {withNavigationFocus} from '@react-navigation/compat';
+
 import api from '../../services/api';
 import Background from '../../components/SignedBackground';
 
 import {
   Container,
   FormInput,
+  SubmitButton,
   List,
   Card,
   Icone,
@@ -14,19 +18,16 @@ import {
   Description,
 } from './styles';
 
-export default function Leagues({navigation}) {
+function Leagues({isFocused, route, navigation}) {
   const [leagues, setLeagues] = useState([]);
   const [searchLeagues, setSearchLeagues] = useState([]);
   const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    async function loadLeagues() {
-      const response = await api.get('leagues');
-      setLeagues(response.data);
-      setSearchLeagues(response.data);
-    }
-    loadLeagues();
-  }, []);
+  async function loadLeagues() {
+    const response = await api.get('leagues');
+    setLeagues(response.data);
+    setSearchLeagues(response.data);
+  }
 
   useEffect(() => {
     function filterLeague() {
@@ -41,6 +42,14 @@ export default function Leagues({navigation}) {
     filterLeague();
   }, [search]);
 
+  useEffect(() => {
+    if (isFocused) {
+      loadLeagues();
+    }
+  }, [isFocused]);
+
+  function handleCreateLeague() {}
+
   return (
     <Background>
       <Container>
@@ -51,6 +60,12 @@ export default function Leagues({navigation}) {
           value={search}
           onChangeText={text => setSearch(text)}
         />
+        <SubmitButton
+          onPress={() => {
+            navigation.navigate('NovaLiga');
+          }}>
+          Criar uma Liga
+        </SubmitButton>
 
         <List
           data={searchLeagues}
@@ -76,3 +91,4 @@ export default function Leagues({navigation}) {
     </Background>
   );
 }
+export default withNavigationFocus(Leagues);

@@ -88,6 +88,7 @@ export default function Games({data, winner}) {
         </Player_2>
       </Team>
       <Info>
+        <Text>{data.league.name}</Text>
         <Pontuacao>
           {data.score_a}
           <Text> x </Text>

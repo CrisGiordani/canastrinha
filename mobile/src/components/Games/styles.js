@@ -21,7 +21,7 @@ export const List = styled.FlatList.attrs({
 })``;
 
 export const Card = styled.View`
-  margin-bottom: 5px;
+  margin: 0 3px 5px 3px;
   padding: 10px;
   border-radius: 4px;
   background: #fff;
@@ -38,7 +38,7 @@ export const Team = styled.View`
   border-radius: 4px;
   flex-direction: column;
   align-items: center;
-  min-width: 80px;
+  width: 80px;
 `;
 
 export const Player_1 = styled.View`

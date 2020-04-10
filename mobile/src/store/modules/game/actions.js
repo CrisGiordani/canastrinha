@@ -29,7 +29,7 @@ export function playing(game) {
     type: '@game/PLAYING',
   };
 }
-export function notPlaying(game) {
+export function notPlaying() {
   return {
     type: '@game/NOT_PLAYING',
   };
@@ -59,6 +59,19 @@ export function reach3000Success() {
 export function reach3000Failure() {
   return {
     type: '@game/REACH_3000_FAILURE',
+  };
+}
+//  CANCEL GAME
+export function cancelGameRequest(id_game) {
+  return {
+    type: '@game/CANCEL_GAME_REQUEST',
+    payload: {id_game},
+  };
+}
+
+export function cancelGameSuccess() {
+  return {
+    type: '@game/CANCEL_GAME_SUCCESS',
   };
 }
 

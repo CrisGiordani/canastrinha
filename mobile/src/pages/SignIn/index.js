@@ -21,6 +21,7 @@ export default function SignIn({navigation}) {
   const signIn_passwordRef = useRef();
 
   function handleSubmit() {
+    setEmail(email.toLowerCase());
     dispatch(signInRequest(email, password));
   }
 

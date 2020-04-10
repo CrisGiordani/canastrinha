@@ -9,13 +9,18 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // páginas
 
 import Dashboard from './pages/Dashboard';
+
 import Leagues from './pages/Leagues';
+import LeaguesCreate from './pages/Leagues/Create';
+
 import League from './pages/League';
 import LeagueRanking from './pages/League/Ranking';
 import LeaguePlayers from './pages/League/Players';
 import LeagueGames from './pages/League/Games';
+
 import Players from './pages/Players';
 import Profile from './pages/Profile';
+
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 
@@ -42,7 +47,7 @@ function RootLeagues() {
       <Stack.Screen
         name="Liga"
         component={League}
-        options={({route}) => ({title: '', id: route.params.id})}
+        options={({route}) => ({title: route.params.name, id: route.params.id})}
       />
       <Stack.Screen
         name="Ranking"
@@ -59,30 +64,12 @@ function RootLeagues() {
         component={LeaguePlayers}
         options={({route}) => ({title: '', id: route.params.id})}
       />
+      <Stack.Screen
+        name="NovaLiga"
+        component={LeaguesCreate}
+        options={({route}) => ({title: 'Criar uma Liga'})}
+      />
     </Stack.Navigator>
-  );
-}
-
-function TopLeague() {
-  return (
-    <Top.Navigator
-      headerMode="none"
-      screenOptions={{
-        animationEnabled: false,
-        headerStyle: {
-          backgroundColor: '#751c95',
-        },
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}>
-      <Top.Screen name="Jogos" component={League} />
-      <Top.Screen name="Jogadores" component={League} />
-      <Top.Screen name="Ranking" component={League} />
-    </Top.Navigator>
   );
 }
 

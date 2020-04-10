@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {TextInput, Platform} from 'react-native';
+import {TextInput, Platform, Alert} from 'react-native';
 import api from '../../services/api';
 
 import {
@@ -8,6 +8,7 @@ import {
   reach3000Request,
   reach3000Failure,
   finishGameRequest,
+  cancelGameRequest,
 } from '../../store/modules/game/actions';
 
 import Background from '../../components/SignedBackground';
@@ -25,6 +26,8 @@ import {
   Text,
   SubmitButton,
   CancelButton,
+  SignLink,
+  SignLinkText,
 } from './styles';
 
 export default function StartedGame() {
@@ -88,6 +91,25 @@ export default function StartedGame() {
   function handleFinish() {
     const id_game = game[0].id;
     dispatch(finishGameRequest(id_game));
+  }
+
+  function handleCancel() {
+    const id_game = game[0].id;
+    //
+    Alert.alert(
+      'Cancelar partida',
+      'Tem certeza que deseja cancelar a partida em andamento? \n\n ATENÇÃO:\n Se a partida for cancelada, todos os dados registrados até o momento serão apagados.',
+      [
+        {
+          text: 'Continuar jogando',
+          style: 'cancel',
+        },
+        {
+          text: 'Cancelar partida',
+          onPress: () => dispatch(cancelGameRequest(id_game)),
+        },
+      ],
+    );
   }
   const loading = useSelector(state => state.auth.loading);
   const reach3000 = useSelector(state => state.game.reach3000);
@@ -172,6 +194,9 @@ export default function StartedGame() {
             </View>
           </>
         )}
+        <SignLink onPress={handleCancel}>
+          <SignLinkText>cancelar partida</SignLinkText>
+        </SignLink>
       </Container>
     </Background>
   );

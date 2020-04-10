@@ -1,7 +1,10 @@
 import styled from 'styled-components';
-import Input from '../../components/Input';
+
 import {SvgUri} from 'react-native-svg';
 import {TouchableOpacity} from 'react-native';
+
+import Input from '../../components/Input';
+import Button from '../../components/Button';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -9,6 +12,10 @@ export const Container = styled.SafeAreaView`
 
 export const FormInput = styled(Input)`
   margin-bottom: 10px;
+`;
+
+export const SubmitButton = styled(Button)`
+  margin: 10px 30px -5px;
 `;
 
 export const List = styled.FlatList.attrs({

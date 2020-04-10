@@ -9,6 +9,7 @@ import {
   playing,
   notPlaying,
   reach3000Success,
+  cancelGameSuccess,
   finishGameSuccess,
 } from './actions';
 
@@ -35,11 +36,13 @@ export function* startGame({payload}) {
 }
 
 export function* setPlaying() {
-  const response = yield call(api.get, 'gameplayingservice');
-  if (response.data.length > 0) {
-    const game = response.data[0];
-    yield put(playing(game));
-  } else {
+  try {
+    const response = yield call(api.get, 'gameplayingservice');
+    if (response.data.length > 0) {
+      const game = response.data[0];
+      yield put(playing(game));
+    }
+  } catch (err) {
     yield put(notPlaying());
   }
 }
@@ -73,6 +76,17 @@ export function* reach3000({payload}) {
   }
 }
 
+export function* cancelGame({payload}) {
+  try {
+    const {id_game} = payload;
+    yield call(api.delete, `games/${id_game}`);
+    yield put(cancelGameSuccess());
+    Alert.alert('Partida cancelada', 'Partida cancelada com sucesso!');
+  } catch (err) {
+    Alert.alert('Erro desconhecido', 'Erro ao cancelar a partida.');
+  }
+}
+
 export function* finishGame({payload}) {
   try {
     const {id_game} = payload;
@@ -92,5 +106,6 @@ export default all([
   takeLatest('@game/START_GAME_REQUEST', startGame),
   takeLatest('@game/REGISTER_ROUND_REQUEST', registerRound),
   takeLatest('@game/REACH_3000_REQUEST', reach3000),
+  takeLatest('@game/CANCEL_GAME_REQUEST', cancelGame),
   takeLatest('@game/FINISH_GAME_REQUEST', finishGame),
 ]);

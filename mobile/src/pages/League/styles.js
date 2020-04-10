@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import {SvgUri} from 'react-native-svg';
 import {TouchableOpacity} from 'react-native';
 
@@ -22,12 +23,11 @@ export const Title = styled.Text`
   padding: 10px 30px 30px;
 `;
 
-export const SubTitle = styled.Text`
-  font-size: 14px;
-  color: #eee;
+export const Text = styled.Text`
+  font-size: 16px;
+  color: #fff;
   align-self: center;
-  padding-top: 5px;
-  padding-bottom: 12px;
+  padding: 8px;
 `;
 
 export const Card = styled(TouchableOpacity)`

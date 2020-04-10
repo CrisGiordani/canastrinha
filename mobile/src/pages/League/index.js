@@ -1,11 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import api from '../../services/api';
-import Background from '../../components/SignedBackground';
+import {useSelector} from 'react-redux';
 
-import {Container, Icone, Title, Card, Left, Info, Name} from './styles';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import Background from '../../components/SignedBackground';
+import LeagueActions from '../../components/LeagueActions';
+
+import {Container, Icone, Title, Text, Card, Left, Info, Name} from './styles';
 
 export default function Liga({route, navigation}) {
+  const player = useSelector(state => state.player.player);
+
   return (
     <Background>
       <Container>
@@ -13,6 +17,9 @@ export default function Liga({route, navigation}) {
           uri={`https://www.tinygraphs.com/labs/isogrids/hexa16/${route.params.name}/?theme=duskfalling&numcolors=4&size=100`}
         />
         <Title>{route.params.name}</Title>
+
+        <LeagueActions id={route.params.id} />
+
         <Card
           onPress={() => {
             navigation.navigate('Ranking', {
