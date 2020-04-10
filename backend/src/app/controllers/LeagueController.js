@@ -15,7 +15,16 @@ class LeagueController {
                 .json({ error: 'Verifique os dados digitados' });
         }
 
-        req.body.created_by = req.playerId;
+        /**
+            Level 3: owner
+            Lever 2: admin
+            Level 1: member
+            Level 0: waiting authorization
+            Level -1: authorization denied
+        */
+
+        req.body.level = 3;
+
         const { name } = req.body;
 
         const leagueExists = await League.findOne({

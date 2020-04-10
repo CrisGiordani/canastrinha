@@ -6,7 +6,7 @@ class LeaguesPlayers extends Model {
             {
                 id_league: Sequelize.INTEGER,
                 id_player: Sequelize.INTEGER,
-                admin: Sequelize.INTEGER,
+                level: Sequelize.INTEGER,
             },
             { sequelize }
         );

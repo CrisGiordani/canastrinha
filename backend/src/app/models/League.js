@@ -8,7 +8,7 @@ class League extends Model {
                 description: Sequelize.TEXT,
                 rules: Sequelize.TEXT,
                 code: Sequelize.STRING,
-                created_by: Sequelize.INTEGER,
+                level: Sequelize.INTEGER,
             },
             { sequelize }
         );

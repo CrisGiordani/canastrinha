@@ -11,7 +11,7 @@ class LeaguePlayers {
                     [Op.eq]: req.params.league,
                 },
             },
-            attributes: [['id_player', 'id']],
+            attributes: [['id_player', 'id'], 'level'],
             include: [
                 {
                     model: Player,
@@ -19,7 +19,10 @@ class LeaguePlayers {
                     attributes: ['name', 'avatar'],
                 },
             ],
-            order: [[{ model: Player, as: 'player' }, 'name', 'asc']],
+            order: [
+                ['level', 'desc'],
+                [{ model: Player, as: 'player' }, 'name', 'asc'],
+            ],
         });
         return res.json(players);
     }

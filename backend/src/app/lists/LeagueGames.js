@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Game from '../models/Game';
+import League from '../models/League';
 import Player from '../models/Player';
 
 import { Op } from 'sequelize';
@@ -20,6 +21,7 @@ class LeaguesGames {
                     'created_at',
                     'updated_at',
                 ],
+
                 include: [
                     {
                         model: Player,
@@ -41,7 +43,13 @@ class LeaguesGames {
                         as: 'p_b2',
                         attributes: ['id', 'name', 'avatar'],
                     },
+                    {
+                        model: League,
+                        as: 'league',
+                        attributes: ['name'],
+                    },
                 ],
+
                 order: [['updated_at', 'desc']],
             });
             return res.json(games);

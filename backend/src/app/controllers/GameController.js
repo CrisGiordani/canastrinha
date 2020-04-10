@@ -1,7 +1,9 @@
 import * as Yup from 'yup';
 import Game from '../models/Game';
+import League from '../models/League';
 import Player from '../models/Player';
 
+import { Op } from 'sequelize';
 class GameController {
     async store(req, res) {
         const schema = Yup.object().shape({
@@ -123,6 +125,7 @@ class GameController {
                     'updated_at',
                 ],
                 order: [['updated_at', 'desc']],
+
                 include: [
                     {
                         model: Player,
@@ -144,10 +147,43 @@ class GameController {
                         as: 'p_b2',
                         attributes: ['id', 'name', 'avatar'],
                     },
+                    {
+                        model: League,
+                        as: 'league',
+                        attributes: ['name'],
+                    },
                 ],
             });
             return res.json(allGames);
         }
+    }
+    async delete(req, res) {
+        const game = await Game.findByPk(req.params.id);
+
+        if (!game) {
+            return res.status(400).json({
+                error: 'Jogo não encontrado!',
+            });
+        }
+        if (
+            game.player_a1 !== req.playerId &&
+            game.player_a2 !== req.playerId &&
+            game.player_b1 !== req.playerId &&
+            game.player_b2 !== req.playerId
+        ) {
+            return res.status(401).json({
+                error: 'Você não tem autorização para cancelar este jogo!',
+            });
+        }
+
+        await Game.destroy({
+            where: {
+                id: {
+                    [Op.eq]: req.params.id,
+                },
+            },
+        });
+        return res.status(204).json({ message: 'Jogo apagado com sucesso!' });
     }
 }
 

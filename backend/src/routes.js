@@ -16,6 +16,7 @@ import GamePlayingService from './app/services/GamePlayingService';
 
 import LeagueGames from './app/lists/LeagueGames';
 import LeaguePlayers from './app/lists/LeaguePlayers';
+import LeagueAuthorizations from './app/lists/LeagueAuthorizations';
 import LeagueRanking from './app/lists/LeagueRanking';
 
 import PlayerGames from './app/lists/PlayerGames';
@@ -34,8 +35,11 @@ routes.use(authMiddleware);
 // Players
 routes.put('/players', PlayerController.update); // edita os dados de um jogador
 routes.get('/players/:id?', PlayerController.index); // lista jogadores OU dados de um jogador
-routes.get('/players/:player/leagues', PlayerLeagues.index); // lista ligas de um player
-routes.get('/players/:player/games', PlayerGames.index); // lista ligas de um player
+routes.post('/players/join/:league', PlayerLeagues.store); // entrar em uma liga
+routes.delete('/players/exit/:league', PlayerLeagues.delete); // sair de uma liga
+routes.get('/players/:player/leagues/:league?', PlayerLeagues.index); // lista ligas de um player (ou liga específica)
+routes.get('/players/:player/games/:game?', PlayerGames.index); // lista jogos de um player (ou jogo específico)
+
 // Files
 routes.post('/files', upload.single('file'), AvatarController.store);
 
@@ -46,6 +50,7 @@ routes.get('/leagues/:id?', LeagueController.index); // lista ligas OU dados de 
 routes.get('/leagues/:league/ranking', LeagueRanking.index); // lista ranking da liga
 routes.get('/leagues/:league/games', LeagueGames.index); // lista jogos de uma liga
 routes.get('/leagues/:league/players', LeaguePlayers.index); // lista players de uma liga
+routes.get('/leaguesAuthorizations', LeagueAuthorizations.index); // lista players pendentes de autorizacao
 
 // JOGO EM ANDAMENTO
 routes.get('/gameplayingservice', GamePlayingService.run);
@@ -53,7 +58,8 @@ routes.get('/gameplayingservice', GamePlayingService.run);
 // Games
 routes.post('/games', GameController.store); // grava uma nova partida
 routes.put('/games/:id', GameController.update); // edita os dados de uma partida
-routes.get('/games/:id?', GameController.index); // lista os jogos OU dados de um jogo (:id)
+routes.get('/games/:id?', GameController.index); // lista os jogos OU dados de um jogo
+routes.delete('/games/:id', GameController.delete); // apaga um jogo e respectivos dados
 
 // Rounds
 routes.post('/rounds', RoundController.store);
