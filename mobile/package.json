@@ -22,7 +22,7 @@
     "date-fns": "^2.9.0",
     "date-fns-timezone": "^0.1.4",
     "date-fns-tz": "^1.0.10",
-    "immer": "^5.3.6",
+    "immer": "^8.0.1",
     "react": "16.9.0",
     "react-native": "0.61.0",
     "react-native-elements": "^1.2.7",
