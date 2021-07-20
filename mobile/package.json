@@ -24,7 +24,7 @@
     "date-fns-tz": "^1.0.10",
     "immer": "^5.3.6",
     "react": "16.9.0",
-    "react-native": "0.61.0",
+    "react-native": "0.62.3",
     "react-native-elements": "^1.2.7",
     "react-native-gesture-handler": "^1.6.0",
     "react-native-image-picker": "^2.3.0",
